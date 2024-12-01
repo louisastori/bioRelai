@@ -11,7 +11,7 @@ class Autoloader{
     
     static function autoloadTrait($class): void
     {
-        $file = 'modeles/traits/' . $class . '.php';
+        $file = 'modele/traits/' . $class . '.php';
         if(is_file($file)&& is_readable($file)){
             require $file;
         }
@@ -20,7 +20,7 @@ class Autoloader{
     
     
     static function autoloadDto($class): void{
-        $file = 'modeles/dto/' . $class . '.php';
+        $file = 'modele/dto/' . $class . '.php';
         if(is_file($file)&& is_readable($file)){
             require $file;
         }
@@ -36,7 +36,7 @@ class Autoloader{
     }
     
     static function autoloadDao($class): void{
-        $file = 'modeles/dao/' . $class . '.php';
+        $file = 'modele/dao/' . $class . '.php';
         if(is_file($file)&& is_readable($file)){
             require $file;
         }

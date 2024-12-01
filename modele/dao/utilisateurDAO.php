@@ -1,36 +1,36 @@
 <?php
 class UtilisateurDAO{
         
-    public static function verification(Utilisateur $utilisateur){
+    public static function verification(Utilisateur $unUtilisateur){
         
-        $requetePrepa = DBConnex::getInstance()->prepare("select utilisateuer.* from utilisateur where login = :login and  mdp = md5(:mdp)");
+        $requetePrepa = DBConnex::getInstance()->prepare("select utilisateurs.* from utilisateurs where mail = :mail and  mdp = md5(:mdp)");
 
 
-        $login = $utilisateur->getLogin();
-        $mdp = $utilisateur->getMdp();
+        $mail = $unUtilisateur->getMail();
+        $mdp = $unUtilisateur->getMdp();
 
-        $requetePrepa->bindParam( ":login", $login);
+        $requetePrepa->bindParam( ":mail", $mail);
         $requetePrepa->bindParam( ":mdp" ,  $mdp);
         
         
        $requetePrepa->execute();
   
-       return $requetePrepa->fetch();
+       $requetePrepa->fetch();
+       $unUser = new Utilisateur(null,null,null,null,null,null);
+       $unUser->hydrate($requetePrepa->fetch(PDO::FETCH_ASSOC));
+       return $unUser;
     }
 
-
-
-
-    public static function creerUtilisateur(Utilisateur $utilisateur){
+    public static function creerUtilisateur(Utilisateur $unUtilisateur){
         
-        $requetePrepa = DBConnex::getInstance()->prepare("INSERT INTO utilisateur ('mail' ,'mdp','statut','nomUtilisateur','prenomUtilisateur')VALUES(':mail', ':mdp',':statut',':nomUtilisateur',':prenomUtilisateur')");
+        $requetePrepa = DBConnex::getInstance()->prepare("INSERT INTO utilisateurs (`mail` ,`mdp`,`statut`,`nomUtilisateur`,`prenomUtilisateur`)VALUES(:mail, :mdp,:statut,:nomUtilisateur,:prenomUtilisateur)");
 
 
-        $mail = $utilisateur->getMail();
-        $mdp = $utilisateur->getMdp();
-        $statut = $utilisateur->getStatut();
-        $nomUtilisateur =$utilisateur->getNomUtilisateur();
-        $prenomUtilisateur =$utilisateur->getPrenomUtilisateur();
+        $mail = $unUtilisateur->getMail();
+        $mdp = $unUtilisateur->getMdp();
+        $statut = $unUtilisateur->getStatut();
+        $nomUtilisateur =$unUtilisateur->getNomUtilisateur();
+        $prenomUtilisateur =$unUtilisateur->getPrenomUtilisateur();
 
         $requetePrepa->bindParam( ":mail", $mail);
         $requetePrepa->bindParam( ":mdp" ,  $mdp);
@@ -38,8 +38,43 @@ class UtilisateurDAO{
         $requetePrepa->bindParam(":nomUtilisateur",$nomUtilisateur);
         $requetePrepa->bindParam(":prenomUtilisateur", $prenomUtilisateur);
         
-        
        $requetePrepa->execute();
-  
+
     }
+    
+
+    public static function updateUtilisateur(Utilisateur $unUtilisateur){
+        $requetePrepa = DBConnex::getInstance()->prepare("UPDATE utilisateurs set utilisateurs.mail=:mail , utilisateurs.mdp=:mdp , utilisateurs.statut=:statut ,
+        utilisateurs.nomUtilisateur=:nomUtilisateur , utilisateurs.prenomUtilisateur=:prenomUtilisateur where utilisateurs.idUtilisateur=:idUtilisateur ");
+
+        $idUtilisateur=$unUtilisateur->getIdUtilisateur();
+        $mail=$unUtilisateur->getMail();
+        $mdp=$unUtilisateur->getMdp();
+        $statut=$unUtilisateur->getStatut();
+        $nomUtilisateur=$unUtilisateur->getNomUtilisateur();
+        $prenomUtilisateur=$unUtilisateur->getPrenomUtilisateur();
+
+        $requetePrepa->bindParam(":idUtilisateur",$idUtilisateur);
+        $requetePrepa->bindParam(":mail",$mail);
+        $requetePrepa->bindParam(":mdp",$mdp);
+
+        $requetePrepa->bindParam(":statut",$statut);
+        $requetePrepa->bindParam(":nomUtilisateur",$nomUtilisateur);
+        $requetePrepa->bindParam(":prenomUtilisateur",$prenomUtilisateur);
+    
+        $requetePrepa->execute();
+    }
+
+    public static function supprimerUtilisateur(Utilisateur $unUtilisateur){
+
+        $requetePrepa = DBConnex::getInstance()->prepare("DELETE FROM utilisateurs where utilisateurs.idUtilisateur=:idUtilisateur ");
+
+        $idUtilisateur=$unUtilisateur->getIdUtilisateur();
+        $requetePrepa->bindParam(":idUtilisateur",$idUtilisateur);
+        $requetePrepa->execute();
+
+    }
+
+
+
 }

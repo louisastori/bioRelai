@@ -6,8 +6,8 @@ if(!isset($_SESSION['identification']) || !$_SESSION['identification']){
 	
 	$formulaireConnexion = new Formulaire('post', 'index.php', 'fConnexion', 'fConnexion');
 	
-	$formulaireConnexion->ajouterComposantLigne($formulaireConnexion->creerLabelFor('identifiant', 'Identifiant :'), 1);
-	$formulaireConnexion->ajouterComposantLigne($formulaireConnexion->creerInputTexte('login', 'login', ''   , 1, '',0),1);
+	$formulaireConnexion->ajouterComposantLigne($formulaireConnexion->creerLabelFor('mail', 'Mail :'), 1);
+	$formulaireConnexion->ajouterComposantLigne($formulaireConnexion->creerInputTexte('mail', 'mail', ''   , 1, '',0),1);
 	$formulaireConnexion->ajouterComposantTab();
 	
 	$formulaireConnexion->ajouterComposantLigne($formulaireConnexion->creerLabelFor('mdp', 'Mot de passe :'), 1);
@@ -28,6 +28,6 @@ if(!isset($_SESSION['identification']) || !$_SESSION['identification']){
 else{
 	$_SESSION['identification']=[];
 	$_SESSION['menuPrincipalBioRelais']="accueil";
-	header('location: index.php');
+	header('location: accueil.php');
 	
 }
