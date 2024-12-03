@@ -3,7 +3,7 @@ class UtilisateurDAO{
         
     public static function verification(Utilisateur $unUtilisateur){
         
-        $requetePrepa = DBConnex::getInstance()->prepare("select utilisateurs.* from utilisateurs where mail = :mail and  mdp = md5(:mdp)");
+        $requetePrepa = DBConnex::getInstance()->prepare("select utilisateurs.* from utilisateurs where mail = :mail and  mdp = :mdp");
 
 
         $mail = $unUtilisateur->getMail();
@@ -15,9 +15,9 @@ class UtilisateurDAO{
         
        $requetePrepa->execute();
   
-       $requetePrepa->fetch();
        $unUser = new Utilisateur(null,null,null,null,null,null);
-       $unUser->hydrate($requetePrepa->fetch(PDO::FETCH_ASSOC));
+       $result = $requetePrepa->fetch();
+       $unUser->hydrate($result);
        return $unUser;
     }
 

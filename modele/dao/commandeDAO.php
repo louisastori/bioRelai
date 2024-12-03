@@ -1,9 +1,9 @@
 <?php
 class commandeDAO{
 
-    public static function lesCommandes(){
+    public static function lesCommandes(Utilisateur $unUtilisateur){
         $result =[];
-        $requetePrepa =DBConnex::getInstance()->prepare("select commandes.idCommande ,commandes.dateCommande 
+        $requetePrepa =DBConnex::getInstance()->prepare("select commandes.idCommande ,commandes.dateCommande
         from commandes ,adherents , utilisateurs
         where commandes.idAdherent =adherents.idAdherent
         AND adherent.idAdherent = utilisateurs.idUtilisateur
@@ -27,9 +27,6 @@ class commandeDAO{
             }
         }
         return $result;
-
-
-
     }
 
 
