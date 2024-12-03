@@ -8,7 +8,7 @@ class UtilisateurDAO{
 
         $mail = $unUtilisateur->getMail();
         $mdp = $unUtilisateur->getMdp();
-
+            echo $mail." et ".$mdp;
         $requetePrepa->bindParam( ":mail", $mail);
         $requetePrepa->bindParam( ":mdp" ,  $mdp);
         
@@ -16,8 +16,7 @@ class UtilisateurDAO{
        $requetePrepa->execute();
   
        $unUser = new Utilisateur(null,null,null,null,null,null);
-       $result = $requetePrepa->fetch();
-       $unUser->hydrate($result);
+          $unUser->hydrate($requetePrepa->fetch(PDO::FETCH_ASSOC));
        return $unUser;
     }
 
