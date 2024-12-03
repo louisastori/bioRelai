@@ -1,20 +1,17 @@
 <?php
 class commandeDAO{
 
-    public static function lesCommandes(Utilisateur $unUtilisateur){
+    public static function lesCommandes($idUtilisateur){
         $result =[];
         $requetePrepa =DBConnex::getInstance()->prepare("select commandes.idCommande ,commandes.dateCommande
         from commandes ,adherents , utilisateurs
         where commandes.idAdherent =adherents.idAdherent
-        AND adherent.idAdherent = utilisateurs.idUtilisateur
-        AND idUtilisateur =");
+        AND adherents.idAdherent = utilisateurs.idUtilisateur
+        AND idUtilisateur =:idUtilisateur");
 
-        $idUtilisateur = $unUtilisateur->getIdUtilisateur();
+       // $idUtilisateur //= $unUtilisateur->getIdUtilisateur();
 
         $requetePrepa->bindParam( ":idUtilisateur", $idUtilisateur);
-
-
-
 
         $requetePrepa->execute();
         $liste = $requetePrepa->fetchAll(PDO::FETCH_ASSOC);
@@ -27,6 +24,37 @@ class commandeDAO{
             }
         }
         return $result;
+    }
+
+    function getLastId() {
+        $bdd = DBConnex::getInstance(); // Connexion à la base
+        $sql = "SELECT MAX(id) AS max_id FROM ma_table";
+        $requete = $bdd->query($sql);
+        $resultat = $requete->fetch(PDO::FETCH_ASSOC);
+    
+        return $resultat['max_id'] ?? 0; // Retourne 0 si aucun ID n'est trouvé
+    }
+
+    public static function creationCommande($idProduit, $quantite){
+
+        $bdd = DBConnex::getInstance(); // Connexion à la base
+        $sql = "SELECT MAX(id) AS max_id FROM lignecommande";
+        $requete = $bdd->query($sql);
+        $resultat = $requete->fetch(PDO::FETCH_ASSOC);
+    
+        $test= $resultat['max_id'] ?? 0;
+        $test =$test+1;
+        
+        $requetePrepa =DBConnex::getInstance()->prepare("INSERT INTO lignecommande (idCommande , idProduit , quantite)
+        values (:newId ,:idProduit , :quantite)");
+    
+        $newId = $test ;
+        $requetePrepa->bindParam( ":idProduit", $idProduit);
+        $requetePrepa->bindParam( ":quantite", $quantite);
+        $requetePrepa->bindParam( ":newId", $newId);
+
+        $requetePrepa->execute();
+
     }
 
 
