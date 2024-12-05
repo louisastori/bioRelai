@@ -54,9 +54,50 @@ class commandeDAO{
         $requetePrepa->bindParam( ":newId", $newId);
 
         $requetePrepa->execute();
-
     }
 
+    public static function laCommande($idUtilisateur,$newId){
+        $result =[];
+        $requetePrepa =DBConnex::getInstance()->prepare("select ligneCommande
+        from commandes ,adherents , utilisateurs
+        where commandes.idAdherent =adherents.idAdherent
+        AND adherents.idAdherent = utilisateurs.idUtilisateur
+        AND idUtilisateur =:idUtilisateur AND idCommande:newId ");
+
+       // $idUtilisateur //= $unUtilisateur->getIdUtilisateur();
+
+        $requetePrepa->bindParam( ":newId",$newId);
+        $requetePrepa->bindParam( ":idUtilisateur", $idUtilisateur);
+
+        $requetePrepa->execute();
+        $liste = $requetePrepa->fetchAll(PDO::FETCH_ASSOC);
+
+        if(!empty($liste)){
+            foreach($liste as $commande){
+                $uneCommande = new Commande(null,null);
+                $uneCommande->hydrate($commande);
+                $result[] = $uneCommande;
+            }
+        }
+        return $result;
+    }
+
+
+    public static function confirmationCommande($idProduit, $quantite,$newId){
+        
+        $requetePrepa =DBConnex::getInstance()->prepare("UPDATE INTO lignecommande
+        SET idCommande= :newId
+        SET idProduit=:idProduit
+        SET quantite =:quantite
+        ");
+        
+    
+        $requetePrepa->bindParam( ":idProduit", $idProduit);
+        $requetePrepa->bindParam( ":quantite", $quantite);
+        $requetePrepa->bindParam( ":newId", $newId);
+
+        $requetePrepa->execute();
+    }
 
     
 

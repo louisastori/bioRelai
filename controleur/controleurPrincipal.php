@@ -53,6 +53,10 @@ if(isset($_POST['supprimerUtilisateur'])){
 }
 
 
+if(isset($_GET['itemLienPanier']) && $_GET['itemLienPanier']=='AdherentsPanier'){
+	$_SESSION['menuPrincipalBioRelais'] = 'AdherentsPanier';
+}
+
 
 
 $menuPrincipalBioRelais = new Menu("menuPrincipalBioRelais");
@@ -69,8 +73,6 @@ else{
     $menuPrincipalBioRelais->ajouterComposant($menuPrincipalBioRelais->creerItemLien("accueil", "accueil"));
 	$menuPrincipalBioRelais->ajouterComposant($menuPrincipalBioRelais->creerItemLien("créer un compte" , "inscription"));
 	$menuPrincipalBioRelais->ajouterComposant($menuPrincipalBioRelais->creerItemLien("connection" , "Connexion"));
-
-	$menuPrincipalBioRelais->ajouterComposant($menuPrincipalBioRelais->creerItemLien("Modifcation Utilisateur" , "AdherentsAchats"));
 	
 }
 $menuPrincipalBioRelais = $menuPrincipalBioRelais->creerMenu("menuPrincipalBioRelais",$_SESSION['menuPrincipalBioRelais']);

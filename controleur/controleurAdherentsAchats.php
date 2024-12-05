@@ -16,12 +16,15 @@ $menuProduit->ajouterComposantTab();
 
 $menuProduit->creerFormulaire();
 
+
+
 $itemLienPanier = new Menu("itemLienPanier");
 
 $itemLienPanier->ajouterComposant($itemLienPanier->creerItemLien("Validation du panier" , "AdherentsPanier"));
 
 $itemLienPanier = $itemLienPanier->creerMenu("itemLienPanier","");
 
+/*
 if(isset($_POST['submitConnex'])){
 
 	$unUser = new Utilisateur(null,$_POST['mail'],$_POST['mdp'],null,null,null);
@@ -34,10 +37,9 @@ if(isset($_POST['submitConnex'])){
 	else{
 		$messageErreurConnexion = "la connexion a échoué ";
 	}
-}
+}*/
 
-if (isset($_POST['validerPanier'])) {
-    
+if(isset($_GET['itemLienPanier']) && $_GET['itemLienPanier']=='AdherentsPanier') {
     if (isset($_POST['quantite']) && is_array($_POST['quantite'])) {
         foreach ($_POST['quantite'] as $idProduit => $quantite) {
             $quantite = filter_var($quantite, FILTER_VALIDATE_INT, ["options" => ["min_range" => 0]]);
